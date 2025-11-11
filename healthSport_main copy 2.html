@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Sport</title>
+    <style>
+        /* Base styles */
+        html, body {
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+            font-family: 'Courier New', monospace;
+            scroll-behavior: smooth;
+            transition: all 0.3s ease;
+        }
+        
+        body {
+            background-color: #1a1a1a;
+            color: white;
+        }
+        
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        a {
+            color: #99f63d;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode a {
+            color: #2c5aa0;
+        }
+        
+        a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 8px #99f63d;
+        }
+        
+        .light-mode a:hover {
+            color: #1a3a6b;
+            text-shadow: none;
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #99f63d;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .theme-toggle {
+            background: #2c5aa0;
+            color: white;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Submenu styles */
+        .submenu {
+            background-color: #1a1a1a;
+            height: 70px;
+            display: flex;
+            position: sticky;
+            top: 0px;
+            font-size: 22px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            border-bottom: 2px solid #99f63d;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .submenu {
+            background-color: #ffffff;
+            border-bottom: 2px solid #2c5aa0;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .submenu a {
+            padding: 0 25px;
+            text-decoration: none;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .light-mode .submenu a {
+            color: #495057;
+        }
+        
+        .light-mode .submenu a:hover {
+            color: #2c5aa0;
+        }
+        
+        /* Section styles */
+        .section {
+            background-color: #222222;
+            flex-wrap: wrap;
+            height: fit-content;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 25px;
+            font-size: 18px;
+            color: white;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border: 1px solid #333333;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .section {
+            background-color: #ffffff;
+            color: #495057;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+        }
+        
+        .section h2 {
+            color: #99f63d;
+            margin-top: 0;
+            border-bottom: 2px solid #444;
+            padding-bottom: 12px;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .section h2 {
+            color: #2c5aa0;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        /* Calculator styles */
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .calculator-header {
+            grid-column: span 2;
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: linear-gradient(to right, #1a1a1a, #222222, #1a1a1a);
+            border-radius: 8px;
+            border: 1px solid #333333;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .calculator-header {
+            background: linear-gradient(to right, #f8f9fa, #ffffff, #f8f9fa);
+            border: 1px solid #e9ecef;
+        }
+        
+        .calculator-header h3 {
+            margin: 0;
+            color: #99f63d;
+            font-size: 22px;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .calculator-header h3 {
+            color: #2c5aa0;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #99f63d;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .input-group label {
+            color: #495057;
+        }
+        
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: #1a1a1a;
+            color: white;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .input-group input, 
+        .light-mode .input-group select {
+            border: 1px solid #ced4da;
+            background-color: #ffffff;
+            color: #495057;
+        }
+        
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #99f63d;
+            box-shadow: 0 0 8px rgba(153, 246, 61, 0.5);
+        }
+        
+        .light-mode .input-group input:focus, 
+        .light-mode .input-group select:focus {
+            border-color: #2c5aa0;
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+        }
+        
+        button {
+            background: linear-gradient(to right, #1a1a1a, #222222);
+            color: #99f63d;
+            border: 2px solid #99f63d;
+            padding: 14px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            grid-column: span 2;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode button {
+            background: linear-gradient(to right, #2c5aa0, #3a6bc5);
+            color: white;
+            border: none;
+        }
+        
+        button:hover {
+            background: #99f63d;
+            color: #1a1a1a;
+            box-shadow: 0 0 15px rgba(153, 246, 61, 0.7);
+        }
+        
+        .light-mode button:hover {
+            background: linear-gradient(to right, #1a3a6b, #2c5aa0);
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+        }
+        
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(to right, #1a1a1a, #222222);
+            border-radius: 8px;
+            border: 2px solid #99f63d;
+            display: none;
+            grid-column: span 2;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .result {
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+            border: 2px solid #2c5aa0;
+        }
+        
+        .result h3 {
+            color: #99f63d;
+            margin-top: 0;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .result h3 {
+            color: #2c5aa0;
+        }
+        
+        #calorieResult {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode #calorieResult {
+            color: #495057;
+        }
+        
+        /* Diet list styles */
+        .diet-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .diet-card {
+            background: linear-gradient(to bottom, #1a1a1a, #222222);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #99f63d;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .light-mode .diet-card {
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+            border-left: 5px solid #2c5aa0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .diet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .light-mode .diet-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .diet-card h3 {
+            margin-top: 0;
+            color: #99f63d;
+            font-size: 22px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .diet-card h3 {
+            color: #2c5aa0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .diet-card p {
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .diet-card p {
+            color: #6c757d;
+        }
+        
+        .diet-card strong {
+            color: #99f63d;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .diet-card strong {
+            color: #2c5aa0;
+        }
+        
+        /* Support section - smaller and at bottom */
+        .support-container {
+            background-color: #1a1a1a;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 3px solid #99f63d;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .support-container {
+            background-color: #f8f9fa;
+            border-top: 3px solid #2c5aa0;
+        }
+        
+        .support-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .support-content h2 {
+            color: #99f63d;
+            margin-top: 0;
+            border-bottom: 2px solid #444;
+            padding-bottom: 12px;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .support-content h2 {
+            color: #2c5aa0;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .links-grid h3 {
+            color: #99f63d;
+            margin-top: 0;
+            font-size: 20px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .links-grid h3 {
+            color: #2c5aa0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .links-grid ul {
+            padding-left: 20px;
+            margin-top: 0;
+        }
+        
+        .links-grid li {
+            margin-bottom: 10px;
+            line-height: 1.4;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .links-grid li {
+            color: #6c757d;
+        }
+        
+        .newsletter {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #222222;
+            border-radius: 8px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .newsletter {
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+        }
+        
+        .newsletter h3 {
+            color: #99f63d;
+            margin-top: 0;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .newsletter h3 {
+            color: #2c5aa0;
+        }
+        
+        .newsletter-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .newsletter-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .newsletter-input input {
+            border: 1px solid #ced4da;
+            background-color: #ffffff;
+            color: #495057;
+        }
+        
+        .newsletter-input button {
+            grid-column: span 1;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .calculator, .links-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-header, button, .result {
+                grid-column: span 1;
+            }
+            
+            .submenu {
+                font-size: 16px;
+                height: 60px;
+            }
+            
+            .submenu a {
+                padding: 0 15px;
+            }
+            
+            .diet-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .newsletter-input {
+                flex-direction: column;
+            }
+            
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">🌙</button>
+    
+    <div class="submenu">
+        <a href="#calorieCalculator">Calorie Calculator</a>
+        <a href="#diets">Diets</a>
+        <a href="#support">Support</a>
+    </div>
+    
+    <div class="section" id="calorieCalculator">
+        <h2>Daily Calorie Calculator</h2>
+        <p>Calculate how many calories you need per day based on your personal information and activity level.</p>
+        
+        <div class="calculator">
+            <div class="calculator-header">
+                <h3>Enter Your Details</h3>
+            </div>
+            
+            <div class="input-group">
+                <label for="gender">Gender</label>
+                <select id="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="age">Age (years)</label>
+                <input type="number" id="age" min="15" max="80" value="30">
+            </div>
+            
+            <div class="input-group">
+                <label for="height">Height (cm)</label>
+                <input type="number" id="height" min="100" max="250" value="170">
+            </div>
+            
+            <div class="input-group">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight" min="30" max="200" value="70">
+            </div>
+            
+            <div class="input-group">
+                <label for="activity">Activity Level</label>
+                <select id="activity">
+                    <option value="1.2">Sedentary (little or no exercise)</option>
+                    <option value="1.375">Lightly active (light exercise 1-3 days/week)</option>
+                    <option value="1.55" selected>Moderately active (moderate exercise 3-5 days/week)</option>
+                    <option value="1.725">Very active (hard exercise 6-7 days/week)</option>
+                    <option value="1.9">Extra active (very hard exercise & physical job)</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="goal">Goal</label>
+                <select id="goal">
+                    <option value="maintain">Maintain weight</option>
+                    <option value="lose">Lose weight</option>
+                    <option value="gain">Gain weight</option>
+                </select>
+            </div>
+            
+            <button id="calculateBtn">Calculate Calories</button>
+            
+            <div class="result" id="result">
+                <h3>Your Daily Calorie Needs:</h3>
+                <p id="calorieResult"></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section" id="diets">
+        <h2>Diet Plans</h2>
+        <p>Choose a diet plan that fits your lifestyle and goals:</p>
+        
+        <div class="diet-list">
+            <div class="diet-card">
+                <h3>Mediterranean Diet</h3>
+                <p>Focuses on fruits, vegetables, whole grains, and healthy fats like olive oil. Includes moderate amounts of fish, poultry, and dairy.</p>
+                <p><strong>Benefits:</strong> Heart health, weight management, reduced inflammation</p>
+            </div>
+            
+            <div class="diet-card">
+                <h3>Keto Diet</h3>
+                <p>High-fat, adequate-protein, low-carbohydrate diet that forces the body to burn fats rather than carbohydrates.</p>
+                <p><strong>Benefits:</strong> Rapid weight loss, improved mental focus, increased energy</p>
+            </div>
+            
+            <div class="diet-card">
+                <h3>Paleo Diet</h3>
+                <p>Based on foods similar to what might have been eaten during the Paleolithic era, including lean meats, fish, fruits, vegetables, nuts and seeds.</p>
+                <p><strong>Benefits:</strong> Weight loss, better blood sugar control, reduced inflammation</p>
+            </div>
+            
+            <div class="diet-card">
+                <h3>Vegetarian Diet</h3>
+                <p>Excludes meat but may include dairy products and eggs. Focuses on plant-based foods.</p>
+                <p><strong>Benefits:</strong> Lower risk of heart disease, reduced environmental impact, weight management</p>
+            </div>
+            
+            <div class="diet-card">
+                <h3>Intermittent Fasting</h3>
+                <p>Cycling between periods of eating and fasting. Common methods include 16/8 (fasting for 16 hours, eating within an 8-hour window).</p>
+                <p><strong>Benefits:</strong> Weight loss, improved metabolism, cellular repair</p>
+            </div>
+            
+            <div class="diet-card">
+                <h3>DASH Diet</h3>
+                <p>Dietary Approaches to Stop Hypertension. Focuses on fruits, vegetables, whole grains, and lean proteins while limiting salt, sugar, and fat.</p>
+                <p><strong>Benefits:</strong> Lower blood pressure, heart health, weight management</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="support-container" id="support">
+        <div class="support-content">
+            <h2>Support & Contacts</h2>
+            
+            <div class="links-grid">
+                <div>
+                    <h3>My Projects</h3>
+                    <ul>
+                        <li><a href="#">Fitness Tracker App</a></li>
+                        <li><a href="#">Healthy Recipes Website</a></li>
+                        <li><a href="#">Workout Planner Tool</a></li>
+                        <li><a href="#">Nutrition Database</a></li>
+                        <li><a href="#">Sports Community Platform</a></li>
+                    </ul>
+                    
+                    <h3>Useful Resources</h3>
+                    <ul>
+                        <li><a href="#">Nutrition Guidelines</a></li>
+                        <li><a href="#">Exercise Tutorials</a></li>
+                        <li><a href="#">Healthy Recipes</a></li>
+                        <li><a href="#">Fitness Calculators</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3>Contact Information</h3>
+                    <ul>
+                        <li>Email: info@healthsport.com</li>
+                        <li>Phone: +1 (555) 123-4567</li>
+                        <li>Address: 123 Fitness Street, Health City</li>
+                        <li>Social Media: 
+                            <a href="#">Facebook</a>, 
+                            <a href="#">Instagram</a>, 
+                            <a href="#">Twitter</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="newsletter">
+                        <h3>Newsletter</h3>
+                        <p>Subscribe for health and fitness tips:</p>
+                        <div class="newsletter-input">
+                            <input type="email" placeholder="Your email address">
+                            <button>Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or default to dark
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        
+        // Apply the saved theme on page load
+        if (currentTheme === 'light') {
+            body.classList.add('light-mode');
+            themeToggle.textContent = '☀️';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            // Update button icon and save preference
+            if (body.classList.contains('light-mode')) {
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+        
+        // Calorie calculator functionality
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            // Get input values
+            const gender = document.getElementById('gender').value;
+            const age = parseInt(document.getElementById('age').value);
+            const height = parseInt(document.getElementById('height').value);
+            const weight = parseInt(document.getElementById('weight').value);
+            const activity = parseFloat(document.getElementById('activity').value);
+            const goal = document.getElementById('goal').value;
+            
+            // Calculate BMR (Basal Metabolic Rate)
+            let bmr;
+            if (gender === 'male') {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+            
+            // Calculate TDEE (Total Daily Energy Expenditure)
+            let tdee = bmr * activity;
+            
+            // Adjust based on goal
+            let calorieNeed;
+            if (goal === 'lose') {
+                calorieNeed = tdee - 500; // 500 calorie deficit for weight loss
+            } else if (goal === 'gain') {
+                calorieNeed = tdee + 500; // 500 calorie surplus for weight gain
+            } else {
+                calorieNeed = tdee; // Maintain weight
+            }
+            
+            // Display result
+            document.getElementById('calorieResult').textContent = 
+                `You need approximately ${Math.round(calorieNeed)} calories per day to ${goal} weight.`;
+            document.getElementById('result').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
